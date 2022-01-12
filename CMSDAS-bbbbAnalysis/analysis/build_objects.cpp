@@ -130,7 +130,14 @@ int main(int argc, char** argv)
             float Rt = 0.1;
             vector<TLorentzVector> bq = {H1b1,H1b2,H2b1,H2b2};
             vector<jet_t> js = {jet1,jet2,jet3,jet4};
+            vector<TLorentzVector> genJs;
+            for (int k = 0; k < 4; k++) {
+                TLorentzVector gj;
+                gj.SetPtEtaPhiM(js[k].genjet_pt,js[k].genjet_eta,js[k].genjet_phi,js[k].genjet_m);
+                genJs.push_back(gj);
+            }
             std::map<int,jet_t> bquark_jMatch;
+            std::map<int,TLorentzVector> bquark_jMatch_genJet;
             vector<int> matched_bqs;
             jet_t jcurr;
             TLorentzVector pcurr;
@@ -150,6 +157,7 @@ int main(int argc, char** argv)
                 }
                 if (imatch != -1 && dRmin < Rt && std::find(matched_bqs.begin(),matched_bqs.end(),imatch) == matched_bqs.end()) {
                     bquark_jMatch[imatch] = js[ij];
+                    bquark_jMatch_genJet[imatch] = genJs[ij];
                     matched_bqs.push_back(imatch);
                     n_match++;
                 }
@@ -164,11 +172,19 @@ int main(int argc, char** argv)
                 TLorentzVector true_H2_breg = bquark_jMatch[2].p4_breg + bquark_jMatch[3].p4_breg;
                 TLorentzVector true_HH_breg = true_H1 + true_H2;
 
+                TLorentzVector true_H1_gen = bquark_jMatch_genJet[0] + bquark_jMatch_genJet[1];
+                TLorentzVector true_H2_gen = bquark_jMatch_genJet[2] + bquark_jMatch_genJet[3];
+                TLorentzVector true_HH_gen = true_H1_gen + true_H2_gen;
+                
+
                 if (true_H1.Pt() < true_H2.Pt()) {
                     std::swap(true_H1,true_H2);
                 }
                 if (true_H1_breg.Pt() < true_H2_breg.Pt()) {
                     std::swap(true_H1_breg,true_H2_breg);
+                }
+                if (true_H1_gen.Pt() < true_H2_gen.Pt()) {
+                    std::swap(true_H1_gen,true_H2_gen);
                 }
 
                 otree.truMatch_H1_pt_ = true_H1.Pt();
@@ -178,12 +194,22 @@ int main(int argc, char** argv)
                 otree.truMatch_H1_m_ = true_H1.M();
                 otree.truMatch_H1_m_breg_ = true_H1_breg.M();
 
+                otree.truMatch_H1_pt_gen_ = true_H1_gen.Pt();
+                otree.truMatch_H1_eta_gen_ = true_H1_gen.Eta();
+                otree.truMatch_H1_phi_gen_ = true_H1_gen.Phi();
+                otree.truMatch_H1_m_gen_ = true_H1_gen.M();
+
                 otree.truMatch_H2_pt_ = true_H2.Pt();
                 otree.truMatch_H2_pt_breg_ = true_H2_breg.Pt();
                 otree.truMatch_H2_eta_ = true_H2.Eta();
                 otree.truMatch_H2_phi_ = true_H2.Phi();
                 otree.truMatch_H2_m_ = true_H2.M();
                 otree.truMatch_H2_m_breg_ = true_H2_breg.M();
+
+                otree.truMatch_H2_pt_gen_ = true_H2_gen.Pt();
+                otree.truMatch_H2_eta_gen_ = true_H2_gen.Eta();
+                otree.truMatch_H2_phi_gen_ = true_H2_gen.Phi();
+                otree.truMatch_H2_m_gen_ = true_H2_gen.M();
                 
                 otree.truMatch_HH_pt_ = true_HH.Pt();
                 otree.truMatch_HH_pt_breg_ = true_HH_breg.Pt();
@@ -191,12 +217,17 @@ int main(int argc, char** argv)
                 otree.truMatch_HH_phi_ = true_HH.Phi();
                 otree.truMatch_HH_m_ = true_HH.M();
                 otree.truMatch_HH_m_breg_ = true_HH_breg.M();
+
+                otree.truMatch_HH_pt_gen_ = true_HH_gen.Pt();
+                otree.truMatch_HH_eta_gen_ = true_HH_gen.Eta();
+                otree.truMatch_HH_phi_gen_ = true_HH_gen.Phi();
+                otree.truMatch_HH_m_gen_ = true_HH_gen.M();
             }
         }
         
         // pair the jets
         std::vector<jet_t> jets {jet1, jet2, jet3, jet4};
-        std::vector<jet_t> result = bbbb_pairing(&jets,mode);
+        std::vector<jet_t> result = bbbb_pairing(&jets,mode,true);
 
         TLorentzVector v_H1, v_H2, v_HH;
         v_H1 = result.at(0).p4_breg + result.at(1).p4_breg;

@@ -47,6 +47,11 @@ class output_tree {
         float truMatch_H1_m_;
         float truMatch_H1_m_breg_;
 
+        float truMatch_H1_pt_gen_;
+        float truMatch_H1_eta_gen_;
+        float truMatch_H1_phi_gen_;
+        float truMatch_H1_m_gen_;
+
         float truMatch_H2_pt_;
         float truMatch_H2_pt_breg_;
         float truMatch_H2_eta_;
@@ -54,12 +59,22 @@ class output_tree {
         float truMatch_H2_m_;
         float truMatch_H2_m_breg_;
 
+        float truMatch_H2_pt_gen_;
+        float truMatch_H2_eta_gen_;
+        float truMatch_H2_phi_gen_;
+        float truMatch_H2_m_gen_;
+
         float truMatch_HH_pt_;
         float truMatch_HH_pt_breg_;
         float truMatch_HH_eta_;
         float truMatch_HH_phi_;
         float truMatch_HH_m_;
         float truMatch_HH_m_breg_;
+
+        float truMatch_HH_pt_gen_;
+        float truMatch_HH_eta_gen_;
+        float truMatch_HH_phi_gen_;
+        float truMatch_HH_m_gen_;
 
         // composite candidates
         float H1_pt_;
@@ -190,6 +205,11 @@ void output_tree::init()
     tree_ -> Branch ("truMatch_H1_m", &truMatch_H1_m_);
     tree_ -> Branch ("truMatch_H1_m_breg", &truMatch_H1_m_breg_);
 
+    tree_ -> Branch("truMatch_H1_pt_gen", &truMatch_H1_pt_gen_);
+    tree_ -> Branch("truMatch_H1_eta_gen", &truMatch_H1_eta_gen_);
+    tree_ -> Branch("truMatch_H1_phi_gen", &truMatch_H1_phi_gen_);
+    tree_ -> Branch("truMatch_H1_m_gen", &truMatch_H1_m_gen_);
+
     tree_ -> Branch ("truMatch_H2_pt", &truMatch_H2_pt_);
     tree_ -> Branch ("truMatch_H2_pt_breg", &truMatch_H2_pt_breg_);
     tree_ -> Branch ("truMatch_H2_eta", &truMatch_H2_eta_);
@@ -197,12 +217,22 @@ void output_tree::init()
     tree_ -> Branch ("truMatch_H2_m", &truMatch_H2_m_);
     tree_ -> Branch ("truMatch_H2_m_breg", &truMatch_H2_m_breg_);
 
+    tree_ -> Branch("truMatch_H2_pt_gen", &truMatch_H2_pt_gen_);
+    tree_ -> Branch("truMatch_H2_eta_gen", &truMatch_H2_eta_gen_);
+    tree_ -> Branch("truMatch_H2_phi_gen", &truMatch_H2_phi_gen_);
+    tree_ -> Branch("truMatch_H2_m_gen", &truMatch_H2_m_gen_);
+
     tree_ -> Branch ("truMatch_HH_pt", &truMatch_HH_pt_);
     tree_ -> Branch ("truMatch_HH_pt_breg", &truMatch_HH_pt_breg_);
     tree_ -> Branch ("truMatch_HH_eta", &truMatch_HH_eta_);
     tree_ -> Branch ("truMatch_HH_phi", &truMatch_HH_phi_);
     tree_ -> Branch ("truMatch_HH_m", &truMatch_HH_m_);
     tree_ -> Branch ("truMatch_HH_m_breg", &truMatch_HH_m_breg_);
+
+    tree_ -> Branch("truMatch_HH_pt_gen", &truMatch_HH_pt_gen_);
+    tree_ -> Branch("truMatch_HH_eta_gen", &truMatch_HH_eta_gen_);
+    tree_ -> Branch("truMatch_HH_phi_gen", &truMatch_HH_phi_gen_);
+    tree_ -> Branch("truMatch_HH_m_gen", &truMatch_HH_m_gen_);
 
     tree_ -> Branch ("H1_pt",  &H1_pt_);
     tree_ -> Branch ("H1_eta", &H1_eta_);
@@ -310,6 +340,11 @@ void output_tree::clear_vars()
     truMatch_H1_phi_ = -999;
     truMatch_H1_m_ = -999;
     truMatch_H1_m_breg_ = -999;
+    
+    truMatch_H1_pt_gen_ = -999;
+    truMatch_H1_eta_gen_ = -999;
+    truMatch_H1_phi_gen_ = -999;
+    truMatch_H1_m_gen_ = -999;
 
     truMatch_H2_pt_ = -999;
     truMatch_H2_pt_breg_ = -999;
@@ -318,12 +353,22 @@ void output_tree::clear_vars()
     truMatch_H2_m_ = -999;
     truMatch_H2_m_breg_ = -999;
 
+    truMatch_H2_pt_gen_ = -999;
+    truMatch_H2_eta_gen_ = -999;
+    truMatch_H2_phi_gen_ = -999;
+    truMatch_H2_m_gen_ = -999;
+
     truMatch_HH_pt_ = -999;
     truMatch_HH_pt_breg_ = -999;
     truMatch_HH_eta_ = -999;
     truMatch_HH_phi_ = -999;
     truMatch_HH_m_ = -999;
     truMatch_HH_m_breg_ = -999;
+
+    truMatch_HH_pt_gen_ = -999;
+    truMatch_HH_eta_gen_ = -999;
+    truMatch_HH_phi_gen_ = -999;
+    truMatch_HH_m_gen_ = -999;
 
     H1_pt_  = -999;
     H1_eta_ = -999;

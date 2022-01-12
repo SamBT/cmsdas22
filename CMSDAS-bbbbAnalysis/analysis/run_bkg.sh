@@ -10,7 +10,6 @@ SAMPLES_MC=( \
     QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8  \
     QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8  \
     QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8 \
-    TT_TuneCUETP8M2T4_13TeV-powheg-pythia8 \
 )
 
 for sample in ${SAMPLES_MC[*]}; do

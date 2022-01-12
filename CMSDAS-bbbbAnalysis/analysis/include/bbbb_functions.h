@@ -71,8 +71,8 @@ float distanceMetric(std::pair<TLorentzVector, TLorentzVector> p_pair, std::vect
   float m1 = p1.M();
   float m2 = p2.M();
   float result = 99999.0;
-  float mH1_0 = 126.68;
-  float mH2_0 = 122.11;
+  float mH1_0 = 118.4;
+  float mH2_0 = 114.0;
   if (mode == "minMassDist") {
     result = fabs(m1-m2);
   }
@@ -94,7 +94,7 @@ float distanceMetric(std::pair<TLorentzVector, TLorentzVector> p_pair, std::vect
     		TVector3 jetX_1 = TVector3(jetX_p4_1.Px(),jetX_p4_1.Py(),jetX_p4_1.Pz()).Unit();
     		TVector3 jetX_2 = TVector3(jetX_p4_2.Px(),jetX_p4_2.Py(),jetX_p4_2.Pz()).Unit();
     		float scalarP = jetX_1.Dot(jetX_2);
-    		distances[ijet][jjet] = std::abs(scalarP-1);	
+    		distances[ijet][jjet] = std::abs(scalarP+1);	
     	}
     }
     result = std::sqrt(std::pow(distances[idxs[0]][idxs[1]],2)+std::pow(distances[idxs[2]][idxs[3]],2));

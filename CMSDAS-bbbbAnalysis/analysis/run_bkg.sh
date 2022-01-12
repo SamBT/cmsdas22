@@ -16,5 +16,6 @@ SAMPLES_MC=( \
 for sample in ${SAMPLES_MC[*]}; do
 	./build_objects ntuples/dasntuples_${sample}.root output_bkg_${sample}_${mode}.root 0 0 $mode
 done
+rm output_allbkg_${mode}.root
 hadd output_allbkg_${mode}.root output_bkg_*${mode}.root
 rm output_bkg_*${mode}.root

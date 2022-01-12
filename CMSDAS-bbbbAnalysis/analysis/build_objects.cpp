@@ -331,28 +331,28 @@ int main(int argc, char** argv)
             // Pay attention to provide the correct variable to estract the trigger efficiency!!
             std::vector<float> jetPtVector {jet1.pt, jet2.pt, jet3.pt, jet4.pt};
             // Remember to order the 4 jets by pT!! (search for std::sort)
-            // std::sort...; 
+            std::sort(jetPtVector.begin(), jetPtVector.end()); 
 
             // Estract the efficiency for the four filters considered in data
-            float dataEfficiency_Double90Quad30_QuadCentralJet30   = theTriggerEfficiencyCalculator.getDataEfficiency_Double90Quad30_QuadCentralJet30  (-999.);
-            float dataEfficiency_Double90Quad30_DoubleCentralJet90 = theTriggerEfficiencyCalculator.getDataEfficiency_Double90Quad30_DoubleCentralJet90(-999.);
-            float dataEfficiency_Quad45_QuadCentralJet45           = theTriggerEfficiencyCalculator.getDataEfficiency_Quad45_QuadCentralJet45          (-999.);
-            float dataEfficiency_And_QuadCentralJet45              = theTriggerEfficiencyCalculator.getDataEfficiency_And_QuadCentralJet45             (-999.);
+            float dataEfficiency_Double90Quad30_QuadCentralJet30   = theTriggerEfficiencyCalculator.getDataEfficiency_Double90Quad30_QuadCentralJet30  (jetPtVector[0]);
+            float dataEfficiency_Double90Quad30_DoubleCentralJet90 = theTriggerEfficiencyCalculator.getDataEfficiency_Double90Quad30_DoubleCentralJet90(jetPtVector[2]);
+            float dataEfficiency_Quad45_QuadCentralJet45           = theTriggerEfficiencyCalculator.getDataEfficiency_Quad45_QuadCentralJet45          (jetPtVector[0]);
+            float dataEfficiency_And_QuadCentralJet45              = theTriggerEfficiencyCalculator.getDataEfficiency_And_QuadCentralJet45             (jetPtVector[0]);
             // Calculate data total efficiency
-            float dataEfficiency_Double90Quad30 = -999.;
-            float dataEfficiency = -999.;
+            float dataEfficiency_Double90Quad30 = dataEfficiency_Double90Quad30_QuadCentralJet30 * dataEfficiency_Double90Quad30_DoubleCentralJet90;
+            float dataEfficiency = dataEfficiency_Double90Quad30 + dataEfficiency_Quad45_QuadCentralJet45 - (dataEfficiency_Double90Quad30 * dataEfficiency_And_QuadCentralJet45);
 
             // Estract the efficiency for the four filters considered in mc
-            float mcEfficiency_Double90Quad30_QuadCentralJet30     = theTriggerEfficiencyCalculator.getMcEfficiency_Double90Quad30_QuadCentralJet30    (-999.);
-            float mcEfficiency_Double90Quad30_DoubleCentralJet90   = theTriggerEfficiencyCalculator.getMcEfficiency_Double90Quad30_DoubleCentralJet90  (-999.);
-            float mcEfficiency_Quad45_QuadCentralJet45             = theTriggerEfficiencyCalculator.getMcEfficiency_Quad45_QuadCentralJet45            (-999.);
-            float mcEfficiency_And_QuadCentralJet45                = theTriggerEfficiencyCalculator.getMcEfficiency_And_QuadCentralJet45               (-999.);
+            float mcEfficiency_Double90Quad30_QuadCentralJet30     = theTriggerEfficiencyCalculator.getMcEfficiency_Double90Quad30_QuadCentralJet30    (jetPtVector[0]);
+            float mcEfficiency_Double90Quad30_DoubleCentralJet90   = theTriggerEfficiencyCalculator.getMcEfficiency_Double90Quad30_DoubleCentralJet90  (jetPtVector[2]);
+            float mcEfficiency_Quad45_QuadCentralJet45             = theTriggerEfficiencyCalculator.getMcEfficiency_Quad45_QuadCentralJet45            (jetPtVector[0]);
+            float mcEfficiency_And_QuadCentralJet45                = theTriggerEfficiencyCalculator.getMcEfficiency_And_QuadCentralJet45               (jetPtVector[0]);
             // Calculate data total efficiency
-            float mcEfficiency_Double90Quad30 = -999.;
-            float mcEfficiency = -999.;
+            float mcEfficiency_Double90Quad30 = mcEfficiency_Double90Quad30_QuadCentralJet30 * mcEfficiency_Double90Quad30_DoubleCentralJet90;
+            float mcEfficiency = mcEfficiency_Double90Quad30 + mcEfficiency_Quad45_QuadCentralJet45 - (mcEfficiency_Double90Quad30 * mcEfficiency_And_QuadCentralJet45);
 
             // Calculate the trigger scale factor (data/mc)
-            otree.trigger_SF_ = -999.;
+            otree.trigger_SF_ = dataEfficiency / mcEfficiency;
         }
         
 

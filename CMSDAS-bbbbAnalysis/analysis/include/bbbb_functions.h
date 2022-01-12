@@ -65,7 +65,7 @@ class TriggerEfficiencyCalculator
 
 };
 
-float distanceMetric(std::pair<TLorentzVector, TLorentzVector> p_pair, std::string mode) {
+float distanceMetric(std::pair<TLorentzVector, TLorentzVector> p_pair, std::vector<TLorentzVector> jet_p4, int idxs[4], std::string mode) {
   TLorentzVector p1 = p_pair.first;
   TLorentzVector p2 = p_pair.second;
   float m1 = p1.M();
@@ -81,6 +81,23 @@ float distanceMetric(std::pair<TLorentzVector, TLorentzVector> p_pair, std::stri
   }
   if (mode == "minDiagonal") {
     result = TMath::Sqrt(pow(m1,2) + pow(m2,2) )*fabs( TMath::Sin( TMath::ATan(m2/m1) - TMath::ATan(mH2_0/mH1_0) ) );
+  }
+  if (mode == "BackToBack") {
+    float distances[3][3]={0};
+    for(int ijet=0; ijet<4;ijet++){
+    	for(int jjet = ijet; jjet<4; jjet++){
+    		TLorentzVector CandH_p4 = jet_p4.at(ijet)+jet_p4.at(jjet);
+    		TLorentzVector jetX_p4_1(jet_p4.at(ijet));
+    		jetX_p4_1.Boost(-CandH_p4.BoostVector());
+    		TLorentzVector jetX_p4_2(jet_p4.at(jjet));
+    		jetX_p4_2.Boost(-CandH_p4.BoostVector());
+    		TVector3 jetX_1 = TVector3(jetX_p4_1.Px(),jetX_p4_1.Py(),jetX_p4_1.Pz()).Unit();
+    		TVector3 jetX_2 = TVector3(jetX_p4_2.Px(),jetX_p4_2.Py(),jetX_p4_2.Pz()).Unit();
+    		float scalarP = jetX_1.Dot(jetX_2);
+    		distances[ijet][jjet] = std::abs(scalarP-1);	
+    	}
+    }
+    result = std::sqrt(std::pow(distances[idxs[0]][idxs[1]],2)+std::pow(distances[idxs[2]][idxs[3]],2));
   }
   return result;
 }
@@ -140,9 +157,19 @@ std::vector<jet_t> bbbb_pairing(const std::vector<jet_t> *presel_jets, std::stri
   std::pair<TLorentzVector, TLorentzVector> p_13_24 = std::make_pair(p3,p4);
   std::pair<TLorentzVector, TLorentzVector> p_14_23 = std::make_pair(p5,p6);
 
-  float d12_34 = distanceMetric(p_12_34,mode);
-  float d13_24 = distanceMetric(p_13_24,mode);
-  float d14_23 = distanceMetric(p_14_23,mode);
+  int idxs_12_34[4] = {0,1,2,3};
+  int idxs_13_24[4] = {0,2,1,3};
+  int idxs_14_23[4] = {0,3,1,2};
+
+  std::vector<TLorentzVector> jet_p4;
+  jet_p4.emplace_back(presel_jets->at(0).p4); 
+  jet_p4.emplace_back(presel_jets->at(1).p4); 
+  jet_p4.emplace_back(presel_jets->at(2).p4); 
+  jet_p4.emplace_back(presel_jets->at(3).p4);
+
+  float d12_34 = distanceMetric(p_12_34, jet_p4, idxs_12_34, mode);
+  float d13_24 = distanceMetric(p_13_24, jet_p4, idxs_13_24, mode);
+  float d14_23 = distanceMetric(p_14_23, jet_p4, idxs_14_23, mode);
 
   float the_min = std::min({d12_34, d13_24, d14_23});
   std::vector<jet_t> outputJets = *presel_jets;

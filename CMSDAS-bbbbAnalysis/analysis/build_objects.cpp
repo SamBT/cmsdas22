@@ -79,12 +79,14 @@ int main(int argc, char** argv)
         // prepare the objects of the 4 jets
         jet_t jet1, jet2, jet3, jet4;
         TLorentzVector H1, H2, H1b1, H1b2, H2b1, H2b2;
-        H1.SetPtEtaPhiM(**(itree.gen_H1_pt),**(itree.gen_H1_eta),**(itree.gen_H1_phi),**(itree.gen_H1_m));
-        H2.SetPtEtaPhiM(**(itree.gen_H2_pt),**(itree.gen_H2_eta),**(itree.gen_H2_phi),**(itree.gen_H2_m));
-        H1b1.SetPtEtaPhiM(**(itree.gen_H1_b1_pt),**(itree.gen_H1_b1_eta),**(itree.gen_H1_b1_phi),**(itree.gen_H1_b1_m));
-        H1b2.SetPtEtaPhiM(**(itree.gen_H1_b2_pt),**(itree.gen_H1_b2_eta),**(itree.gen_H1_b2_phi),**(itree.gen_H1_b2_m));
-        H2b1.SetPtEtaPhiM(**(itree.gen_H2_b1_pt),**(itree.gen_H2_b1_eta),**(itree.gen_H2_b1_phi),**(itree.gen_H2_b1_m));
-        H2b2.SetPtEtaPhiM(**(itree.gen_H2_b2_pt),**(itree.gen_H2_b2_eta),**(itree.gen_H2_b2_phi),**(itree.gen_H2_b2_m));
+        if (isSig) {
+            H1.SetPtEtaPhiM(**(itree.gen_H1_pt),**(itree.gen_H1_eta),**(itree.gen_H1_phi),**(itree.gen_H1_m));
+            H2.SetPtEtaPhiM(**(itree.gen_H2_pt),**(itree.gen_H2_eta),**(itree.gen_H2_phi),**(itree.gen_H2_m));
+            H1b1.SetPtEtaPhiM(**(itree.gen_H1_b1_pt),**(itree.gen_H1_b1_eta),**(itree.gen_H1_b1_phi),**(itree.gen_H1_b1_m));
+            H1b2.SetPtEtaPhiM(**(itree.gen_H1_b2_pt),**(itree.gen_H1_b2_eta),**(itree.gen_H1_b2_phi),**(itree.gen_H1_b2_m));
+            H2b1.SetPtEtaPhiM(**(itree.gen_H2_b1_pt),**(itree.gen_H2_b1_eta),**(itree.gen_H2_b1_phi),**(itree.gen_H2_b1_m));
+            H2b2.SetPtEtaPhiM(**(itree.gen_H2_b2_pt),**(itree.gen_H2_b2_eta),**(itree.gen_H2_b2_phi),**(itree.gen_H2_b2_m));
+        }
 
         // the macros below copy the properties of the jet with the specified index (1,2,3,4) to the jet object (jet1,jet2,jet3,jet4)
         init_jet_t(jet1, 1, itree, sample_type) ;
